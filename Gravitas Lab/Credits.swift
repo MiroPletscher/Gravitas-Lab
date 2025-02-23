@@ -17,6 +17,7 @@ Elephant: Flaticon.com
 Horse: Flaticon.com
 Mouse/Rat: Flaticon.com
 Rocket: Flaticon.com
+Car: Flaticon.com
 """)
         }
     }
