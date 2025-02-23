@@ -103,7 +103,7 @@ struct MainScene: View {
                 Spacer()
                 Text("\(unitCount, specifier: "%.0f") \(currentAnimal.name)")
                     .padding()
-                Text(String(kilograms))
+                Text(String(kilograms.formatted(.number.grouping(.automatic))))
                 Text("Kilograms")
             }
             .padding(.trailing, 30)
