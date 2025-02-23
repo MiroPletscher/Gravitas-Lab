@@ -45,3 +45,9 @@ extension Color {
         )
     }
 }
+
+extension CGFloat {
+    func degreesToRadians() -> CGFloat {
+        return self * .pi / 180.0
+    }
+}

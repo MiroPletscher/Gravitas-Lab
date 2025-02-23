@@ -1,6 +1,10 @@
 import SwiftUI
 
 struct IntroductionScene: View {
+    @State private var showCredits = false
+    @State private var showMain = false
+    @AppStorage("hasSeenSecondScene") private var hasSeenSecondScene: Bool = false
+    
     var body: some View {
         ZStack {
             LinearGradient(
@@ -24,20 +28,37 @@ struct IntroductionScene: View {
                             .font(.system(size: 30))
                         Text("Gravitas Lab")
                             .font(.system(size: 70))
+                        Button("Credits"){
+                            showCredits = true
+                        }
+                        .padding(.top)
                     }
                 }
                 
                 Spacer()
                 
-                NavigationLink(destination: SecondScene()){
-                    Text("Next →")
-                        .font(.system(size: 24))
+                if hasSeenSecondScene{
+                    NavigationLink(destination: SecondScene()){
+                        Text("Next →")
+                            .font(.system(size: 24))
+                    }
+                }else{
+                    Button("Start →"){
+                        showMain = true
+                    }
+                    .font(.system(size: 24))
                 }
             }
             .padding(60)
             .padding(.leading, 25)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
             .foregroundColor(.white)
+        }
+        .sheet(isPresented: $showCredits){
+            Credits()
+        }
+        .fullScreenCover(isPresented: $showMain){
+            MainScene()
         }
     }
 }

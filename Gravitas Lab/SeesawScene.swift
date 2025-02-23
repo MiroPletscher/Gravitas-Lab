@@ -34,12 +34,14 @@ class SeesawScene: SKScene {
         addSeesaw()
         
         // Object (Animal)
-        let objectPosition = CGPoint(x: size.width / 2 + 130, y: size.height / 2 + 50)
-        addWeightedObject(at: objectPosition, mass: CGFloat(animalMass), texture: animalTexture)
+        if animalMass > 0{
+            let objectPosition = CGPoint(x: size.width / 2 + 130, y: size.height / 2 + 50)
+            addWeightedObject(at: objectPosition, mass: CGFloat(animalMass), texture: animalTexture)
+        }
         
         // Rocket
         let object2Position = CGPoint(x: size.width / 2 - 130, y: size.height / 2)
-        addWeightedObject(at: object2Position, mass: CGFloat(objectMass), texture: "rocket")
+        addWeightedObject(at: object2Position, mass: CGFloat(objectMass), texture: objectTexture)
 
         // Attach the horizontal line to the rocket
         addHorizontalLineToRocket()
@@ -120,13 +122,13 @@ class SeesawScene: SKScene {
 
     // 🔹 Function to create a horizontal line above the rocket
     func addHorizontalLineToRocket() {
-        if let rocket = childNode(withName: "rocket") {
+        if let heavyObject = childNode(withName: objectTexture){
             let linePath = UIBezierPath()
-            let lineHeight: CGFloat = rocket.frame.maxY + 50 // Fixed height above rocket
+            let lineHeight: CGFloat = heavyObject.frame.maxY + 50 // Fixed height above rocket
             let lineWidth: CGFloat = 100 // Adjustable length
 
-            let startX = rocket.position.x - lineWidth / 2
-            let endX = rocket.position.x + lineWidth / 2
+            let startX = heavyObject.position.x - lineWidth / 2
+            let endX = heavyObject.position.x + lineWidth / 2
             
             linePath.move(to: CGPoint(x: startX, y: lineHeight))
             linePath.addLine(to: CGPoint(x: endX, y: lineHeight))
@@ -142,12 +144,12 @@ class SeesawScene: SKScene {
 
     override func update(_ currentTime: TimeInterval) {
         // Find the rocket
-        if let rocket = childNode(withName: "rocket") {
+        if let heavyObject = childNode(withName: objectTexture){
             
             // Remove existing dashed line to avoid duplicates
             childNode(withName: "horizontalLineToRocket")?.removeFromParent()
             
-            let lineHeight: CGFloat = rocket.frame.maxY // Align with rocket top
+            let lineHeight: CGFloat = heavyObject.frame.maxY // Align with rocket top
             let startX: CGFloat = 0  // Starts at the left edge
             let endX: CGFloat = size.width // Stops at rocket's tip
             
@@ -171,16 +173,26 @@ class SeesawScene: SKScene {
     }
 }
 
-struct Animal: Identifiable {
+struct Entity: Identifiable {
     let id = UUID()
     let name: String
+    let plural: String?
     let weight: Float
     let imageName: String
     var isSelected: Bool = false
-}
-
-extension CGFloat {
-    func degreesToRadians() -> CGFloat {
-        return self * .pi / 180.0
+    
+    init(name: String, plural: String? = nil, weight: Float, imageName: String) {
+        self.name = name
+        self.plural = plural
+        self.weight = weight
+        self.imageName = imageName
+    }
+    
+    func getPlural() -> String {
+        if let pluralForm = plural {
+            return pluralForm
+        } else {
+            return "\(name)s"
+        }
     }
 }
