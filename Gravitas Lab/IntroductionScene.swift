@@ -37,7 +37,7 @@ struct IntroductionScene: View {
                 
                 Spacer()
                 
-                if hasSeenSecondScene{
+                if hasSeenSecondScene == false{
                     NavigationLink(destination: SecondScene()){
                         Text("Next →")
                             .font(.system(size: 24))
@@ -53,6 +53,9 @@ struct IntroductionScene: View {
             .padding(.leading, 25)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
             .foregroundColor(.white)
+        }
+        .onAppear{
+            hasSeenSecondScene = true
         }
         .sheet(isPresented: $showCredits){
             Credits()
