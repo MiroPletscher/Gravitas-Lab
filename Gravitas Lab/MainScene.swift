@@ -158,6 +158,8 @@ struct MainScene: View {
                 animals[0].isSelected = true
                 currentAnimal = animals[0]
             }
+            
+            AudioManager.shared.playBackgroundMusic()
         }
     }
 }
